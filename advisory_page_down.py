@@ -1,11 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time    : 2018/8/10 18:54
-# @Author  : ShawnXie
-# @Site    : 
-# @File    : advisory_page_down.py
-# @SDE     : MacOS 10.13.6, PyCharm 2018.2.1 Pro, Python 3.7.0, Google Chrome 68.0.3440.106
-# @Function: 根据输入的起止时间，下载该时段内好大夫医患对话详情页，可自定义全局常量 2018-08-14 2140
 
 import datetime
 import os

@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# @Time    : 2018/8/10 18:54
+# @FileName: advisory_page_down.py
+# @Function: 根据输入的起止时间，下载该时段内好大夫医患对话详情页，可自定义全局常量 2018-08-28 1529
 
 import datetime
 import os

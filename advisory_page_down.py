@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2018/8/10 18:54
 # @FileName: advisory_page_down.py
-# @Function: 根据输入的起止时间，下载该时段内好大夫医患对话详情页，可自定义全局常量 2018-08-28 1529
+# @Function: 根据输入的起止时间，下载该时段内好大夫医患对话详情页，可自定义全局常量 2018-08-30 0044
 
 import datetime
 import os
@@ -20,7 +20,7 @@ DATE_START = '20080222'
 DATE_END = '20080222'
 DIR_PATH = './'
 TIME_WAIT = 10
-TIME_SLEEP = 0.5
+TIME_SLEEP = 1
 # log 编码方式
 ENCODING_STYLE = 'gb18030'
 
@@ -62,7 +62,8 @@ def down_detail_page(file_path, local_time):
         print(advisory_date.strftime('%Y-%m-%d'), ' 日的页面用时  ', end='')
         print(delta_time, end='')
         print('  秒解析并抓取完毕')
-        advisory_date += datetime.timedelta(days=1)  # 日期推进一天，联系下文不用加 time.sleep
+        # 日期推进一天，联系下文不用加 time.sleep
+        advisory_date += datetime.timedelta(days=1)
     else:
         print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()), ' 程序顺利运行结束!')
 
@@ -82,8 +83,9 @@ def creat_date_page_url(advisory_date, file_path, local_time):
         print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()), ' 开始尝试抓取 ', advisory_date.strftime('%Y-%m-%d'),
               ' 日第 ', str(date_page), ' 页问诊记录')
         try:
-            browser.get(date_page_url)  # 获取含 title 和 detail page url的页面
-            #  等页面加载成功直到时间超过 TIME_WAIT
+            # 获取含 title 和 detail page url的页面
+            browser.get(date_page_url)
+            # 等页面加载成功直到时间超过 TIME_WAIT
             wait.until(EC.presence_of_element_located((By.XPATH, '//div[@class="map_all"]')))
             try:
                 # 查找页面class name为'hh'的节点。这里也可以用 try except 做
@@ -146,7 +148,7 @@ def creat_arr_title_url(item, len_item):
     :param len_item:
     :return: arr_title_url
     """
-    # 数组初始化，行数为节点的个数
+    # 数组初始化，行数为节点的个数，j 为临时变量
     arr_title_url = [[] for j in range(len_item)]
     for i in range(len_item):
         arr_title_url[i].append(item[i].get_attribute('href'))
@@ -169,7 +171,8 @@ def get_detail_page(detail_page_url, pre_file_name, file_path, local_time):
         # 等待所有节点加载出来
         wait.until(EC.presence_of_all_elements_located)
         # 保存网页源码为 HTML 文件到本地，注意编码问题
-        elements = browser.find_element_by_xpath('//*')  # 取源码中所有的节点,elements 没有s没问题
+        # 取源码中所有的节点,element 不加 s 没问题
+        elements = browser.find_element_by_xpath('//*')
         source_code = elements.get_attribute('outerHTML')
         # HTML 命名形如20180322_1_xxx.htm,以下用切片的方法获取没有'/'的部分，不然会被认为是路径
         # 切片也可以用 detail_page_url.split('/')[-1]
@@ -184,8 +187,7 @@ def get_detail_page(detail_page_url, pre_file_name, file_path, local_time):
         with open(file_path + 'log/' + record_filename_name + '.txt', 'a', encoding=ENCODING_STYLE) as record_filename:
             record_filename.write(file_name + '\n')
         # 抓取每个页面后等候一下，防止过快被屏蔽
-        # 2018-08-14 2140
-        # time.sleep(TIME_SLEEP)
+        time.sleep(TIME_SLEEP)
     except Exception:
         print(detail_page_url, ' 未抓取成功!')
         # 为记录没有成功保存的 HTML 的 URL 的 TXT 文件命名
@@ -193,8 +195,7 @@ def get_detail_page(detail_page_url, pre_file_name, file_path, local_time):
         with open(file_path + 'log/' + record_errfilename_name + '.txt', 'a', encoding=ENCODING_STYLE) \
                 as record_errfilename:
             record_errfilename.write(pre_file_name + '_' + detail_page_url + '\n')
-        # 2018-08-14 2140
-        # time.sleep(TIME_SLEEP)
+        time.sleep(TIME_SLEEP)
 
 
 def make_dir():
@@ -209,7 +210,8 @@ def make_dir():
     exists = os.path.exists(log_path)
     if not exists:
         os.makedirs(log_path)
-        return file_path  # 返回两个参数麻烦
+        # 返回两个参数麻烦
+        return file_path
     else:
         return file_path
 
@@ -227,8 +229,9 @@ def main():
     # ========================================================
     file_path = make_dir()
     try:
-        down_detail_page(file_path, local_time)  # 下载医患对话的详情页
-        print('🍺🍺🍺🍺🍺🍺🍺🍺🍺🍺  从 ', DATE_START, ' 到 ', DATE_END, ' 期间的网页已全部存入 ', file_path)  # 提示完成
+        # 下载医患对话的详情页
+        down_detail_page(file_path, local_time)
+        print('🍺🍺🍺🍺🍺🍺🍺🍺🍺🍺  从 ', DATE_START, ' 到 ', DATE_END, ' 期间的网页已全部存入 ', file_path)
     except Exception:
         print('😰😰😰😰😰😰😰😰😰😰  从 ', DATE_START, ' 到 ', DATE_END, ' 期间的网页获取失败!')
     browser.close()
@@ -236,4 +239,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

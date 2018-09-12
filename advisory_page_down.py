@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2018/8/10 18:54
 # @FileName: advisory_page_down.py
-# @Function: 根据输入的起止时间，下载该时段内好大夫医患对话详情页，可自定义全局常量 2018-09-12 0234
+# @Function: 根据输入的起止时间，下载该时段内好大夫医患对话详情页，可自定义全局常量 2018-09-12 0234（断点续爬）
 
 import datetime
 import os
@@ -18,7 +18,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 # 定义抓取数据的url，时间跨度及存储路径等初始值
 BASE_URL = 'https://www.haodf.com/sitemap-zx/'
 DATE_START = '20080222'
-DATE_END = '20080222'
+DATE_END = '20080223'
 DIR_PATH = './'
 TIME_WAIT = 30
 TIME_SLEEP = 2
@@ -29,8 +29,8 @@ ENCODING_STYLE = 'gb18030'
 CURRENT_DATE = DATE_START
 # 断点发生时正在爬取的日期页为第几页，默认为1
 CURRENT_PAGE = 1
-# 断点发生时，正要爬取的详情页 url 为该日该页的第几条,默认为0
-current_index = 0
+# 断点发生时 list 下标 current_index 正好等于已成功爬取的条数，默认为0
+current_index = 2
 
 # chrome 无窗模式
 chrome_options = webdriver.ChromeOptions()
@@ -219,7 +219,7 @@ def get_detail_page(detail_page_url, pre_file_name, file_path, local_time):
         # 抓取每个页面后等候一下，防止过快被屏蔽或出现 5k 文件
         time.sleep(TIME_SLEEP)
         # 判断该页是否有后续页（翻页）
-        detail_pages_amount = re.search('<div class="mt50">.*?\D*?(\d+)\D*?&nbsp;页', source_code, re.S)
+        detail_pages_amount = re.search('<div class="mt50">.*?\D*?(\d+)\D*?页', source_code, re.S)
         if detail_pages_amount:
             for i in range(2, int(detail_pages_amount.group(1)) + 1):
                 print('当前问诊记录共有 ', detail_pages_amount.group(1), ' 页，', '正在爬取第 ', str(i), ' 页！')

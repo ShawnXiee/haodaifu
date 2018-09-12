@@ -15,7 +15,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-
 # 定义抓取数据的url，时间跨度及存储路径等初始值
 BASE_URL = 'https://www.haodf.com/sitemap-zx/'
 DATE_START = '20080222'

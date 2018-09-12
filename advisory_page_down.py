@@ -30,7 +30,7 @@ CURRENT_DATE = DATE_START
 # 断点发生时正在爬取的日期页为第几页，默认为1
 CURRENT_PAGE = 1
 # 断点发生时 list 下标 current_index 正好等于已成功爬取的条数，默认为0
-current_index = 2
+current_index = 0
 
 # chrome 无窗模式
 chrome_options = webdriver.ChromeOptions()

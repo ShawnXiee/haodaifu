@@ -54,7 +54,7 @@ def down_detail_page(file_path, local_time):
     current_date = datetime.datetime.strptime(CURRENT_DATE, '%Y%m%d')
     advisory_date_end = datetime.datetime.strptime(DATE_END, '%Y%m%d')
     # 是否断点续爬
-    if advisory_date <= current_date:
+    if advisory_date < current_date:
         advisory_date = current_date
     # else:
         # print('从初始日期 DATE_START 开始爬取。')

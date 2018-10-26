@@ -3,5 +3,5 @@ To crawl and parse the [pages](https://www.haodf.com/sitemap-zx/2018/) about doc
 
 [Learn more in Wiki.](https://github.com/ShawnXiee/haodaifu/wiki)
 
-## Contributors
+## Special thanks to
 Cora
